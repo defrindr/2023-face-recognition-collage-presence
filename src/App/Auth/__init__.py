@@ -1,0 +1,12 @@
+from App.Extensions.routes import Routes
+from flask import Blueprint
+from . import controller
+
+Module = Blueprint('auth', __name__, template_folder="../Templates/Auth")
+
+print(Module.root_path)
+
+registerRoute = Routes(Module)
+
+registerRoute.get("/", controller.login)
+registerRoute.post("/login", controller.loginAction)

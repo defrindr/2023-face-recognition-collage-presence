@@ -1,0 +1,18 @@
+{% extends 'Auth/layout.html' %}
+{% block title %}
+LOGIN
+{% endblock %}
+{% block bg %}{{ bg_url }}{% endblock %}
+
+{% block header %}
+<img src="{{ url_for('static', filename='logo unmuh.gif') }}" width="91" height="86" alt="" /><br>LOGIN MAHASISWA
+{% endblock %}
+
+{% block content %}
+<form action="{{ url_for('auth.loginAction') }}" method="post" class="login-container">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <p><input name="nim" type="text" required="required" id="nim" placeholder="NIM"></p>
+    <p><input name="passwd" type="password" required="required" id="psswd" placeholder="Password"></p>
+    <p><input type="submit" value="Log in"></p>
+</form>
+{% endblock %}
