@@ -20,7 +20,7 @@ def index():
 
     if search != '':
         baseQuery = baseQuery.filter(
-            MataKuliah.name.like(f"%{search}%")
+            MataKuliah.nama.like(f"%{search}%")
         )
         pass
 
