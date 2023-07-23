@@ -1,5 +1,5 @@
 from hashlib import md5
-from . import Base
+from .Base import Base
 from App.Core.database import db
 from sqlalchemy import Column, String, JSON, Integer, Enum
 
@@ -11,6 +11,8 @@ class Kelas(db.Model):
     prodi = Column(String(255))
     kelas = Column(String(255))
     flag = Column(Integer, default=1)
+    
+    anggota_kelas = db.relationship('KelasMahasiswa', back_populates='kelas')
     pass
 
 
@@ -41,7 +43,7 @@ def _getListProdi():
 
 
 def _getProdi(fakultas):
-    return getListProdi()[fakultas]
+    return _getListProdi()[fakultas]
 
 
 def _fetchByCriteria(fakultas, prodi, kelas):

@@ -1,5 +1,5 @@
 from hashlib import md5
-from . import Base
+from .Base import Base
 from App.Core.database import db
 from sqlalchemy import Column, String, JSON, Integer, Enum
 import enum
@@ -20,6 +20,8 @@ class User(db.Model):
     role = Column(Enum(Role))
     name = Column(String(255))
     flag = Column(Integer, default=1)
+
+    anggota_kelas = db.relationship('KelasMahasiswa', back_populates='user')
     pass
 
 
