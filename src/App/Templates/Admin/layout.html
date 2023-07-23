@@ -96,12 +96,14 @@
 
     </div>
 
+    {% block script %}
     <!-- Vendor js -->
     <script src="{{ url_for('static', filename='assets/js/vendor.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/libs/morris-js/morris.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/libs/raphael/raphael.min.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/pages/dashboard.init.js') }}"></script>
     <script src="{{ url_for('static', filename='assets/js/app.min.js') }}"></script>
+    {% endblock %}
 
 </body>
 

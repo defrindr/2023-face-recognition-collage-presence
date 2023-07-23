@@ -1,0 +1,77 @@
+{% extends 'Admin/layout.html' %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block content %}
+
+{{breadcrumb(title)}}
+{{alert()}}
+
+<div class="col-md-12">
+    <a href="{{url_for( module + '.index')}}" class="btn btn-danger mb-2">
+        <i class="mdi mdi-back"></i> Kembali
+    </a>
+    <div class="card">
+        <div class="card-body">
+
+            <form action="{{url_for(module + '.update', id=model.id)}}" class="form" method="post">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input type="hidden" name="_method" value="PUT" />
+
+                <div class="form-group">
+                    <label for="fakultas">Fakultas</label>
+                    <select name="fakultas" id="fakultas" class="form-control">
+                        <option>-- Pilih Fakultas --</option>
+                        {% for f in fakultas%}
+                        <option value="{{f}}" {% if model.fakultas==f %} selected {% endif %}>{{f}}</option>
+                        {% endfor%}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="prodi">Prodi</label>
+                    <select name="prodi" id="prodi" class="form-control">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="kelas">Kelas</label>
+                    <input type="year" class="form-control" name="kelas" value="{{model.kelas}}" required>
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-primary">
+                        <i class="ion ion-md-save"></i>
+                        Submit
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+{{super()}}
+
+<script>
+    let listProdi = {{ prodi| tojson | safe }};
+    let fakultasElement = $('#fakultas');
+    let prodiElement = $('#prodi');
+    let selectedProdi = "{{model.prodi}}";
+
+    function setupProdiElement(selectedKey) {
+        prodiElement.empty()
+        prodiElement.append(`<option>-- Pilih Prodi --</option>`)
+        listProdi[selectedKey].forEach(value => prodiElement.append(`<option value='${value}' ${selectedProdi === value ? 'selected' : ''}>${value}</option>`))
+        console.log(selectedKey)
+    }
+
+    fakultasElement.on('change', () => {
+        let selectedKey = fakultasElement.val()
+        setupProdiElement(selectedKey)
+    })
+
+    setupProdiElement('{{ model.fakultas }}')
+
+</script>
+{% endblock %}
