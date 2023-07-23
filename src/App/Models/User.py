@@ -1,3 +1,4 @@
+from hashlib import md5
 from . import Base
 from App.Core.database import db
 from sqlalchemy import Column, String, JSON, Integer, Enum
@@ -20,3 +21,16 @@ class User(db.Model):
     name = Column(String(255))
     flag = Column(Integer, default=1)
     pass
+
+
+
+def _hashPassword(plaintext):
+    return md5(str(plaintext).encode()).hexdigest()
+
+
+def _fetchByUsername(username):
+    return User.query.filter(User.username == username).first()
+
+
+def _fetchById(id):
+    return User.query.filter(User.id == id).first()

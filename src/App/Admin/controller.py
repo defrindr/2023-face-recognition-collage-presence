@@ -1,2 +1,3 @@
+from flask import render_template
 def index():
-    return "Halo bro"
+    return render_template('index.html')

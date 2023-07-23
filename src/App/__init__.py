@@ -20,7 +20,6 @@ def create_app(app, config_class=Config):
     db.init_app(app)
 
     # Initialize Flask extensions here
-
     # Register blueprints here
     app.register_blueprint(AuthModule, url_prefix='/auth')
     app.register_blueprint(AdminRoutes, url_prefix='/admin')
