@@ -72,6 +72,12 @@
                         <td> {{ row.prodi }} </td>
                         <td> {{ row.kelas }} </td>
                         <td>
+                            <a href="{{url_for( module + '.mahasiswa.index', id=row.id)}}" class="btn btn-primary mt-1 mr-1">
+                                <i class="ion ion-ios-cog"></i> Mahasiswa
+                            </a>
+                            <a href="{{url_for( module + '.jadwal.index', id=row.id)}}" class="btn btn-success mt-1 mr-1">
+                                <i class="ion ion-ios-cog"></i> Jadwal
+                            </a>
                             <a href="{{url_for( module + '.edit', id=row.id)}}" class="btn btn-warning mt-1 mr-1">
                                 <i class="mdi mdi-pencil"></i> Edit
                             </a>
@@ -79,7 +85,7 @@
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                                 <input type="hidden" name="_method" value="DELETE" />
                                 <button class="btn btn-danger mt-1 mr-1">
-                                    <i class="mdi mdi-trash"></i> Hapus
+                                    <i class="mdi mdi-trash-can"></i> Hapus
                                 </button>
                             </form>
                         </td>
