@@ -23,7 +23,6 @@ class User(db.Model):
     pass
 
 
-
 def _hashPassword(plaintext):
     return md5(str(plaintext).encode()).hexdigest()
 
@@ -34,3 +33,10 @@ def _fetchByUsername(username):
 
 def _fetchById(id):
     return User.query.filter(User.id == id).first()
+
+
+def _baseQuery():
+    return User.query.filter(
+        User.role == Role.MAHASISWA,
+        User.flag == 1
+    ).order_by(User.username)

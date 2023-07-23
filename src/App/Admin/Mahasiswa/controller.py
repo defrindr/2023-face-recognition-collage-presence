@@ -1,7 +1,7 @@
 from flask import render_template, request, url_for, flash, redirect
 from sqlalchemy import or_
 
-from App.Models.User import Role, User, _fetchById, _fetchByUsername, _hashPassword
+from App.Models.User import Role, User, _baseQuery, _fetchById, _fetchByUsername, _hashPassword
 from hashlib import md5
 from App.Core.database import db
 
@@ -12,14 +12,13 @@ template = 'Mahasiswa/'
 def index():
 
     title = "Management Mahasiswa"
-    headers = ['NIM', 'Name', 'Aksi']
+    headers = ['No', 'NIM', 'Name', 'Aksi']
 
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
     search = request.args.get('search', '', type=str)
 
-    baseQuery = User.query.filter(
-        User.role == Role.MAHASISWA, User.flag == 1).order_by(User.username)
+    baseQuery = _baseQuery()
 
     if search != '':
         baseQuery = baseQuery.filter(
