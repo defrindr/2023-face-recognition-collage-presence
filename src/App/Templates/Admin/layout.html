@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {%block header%}
+    <meta charset="utf-8" />
+    <title>{%block title%}{% endblock%} | {{config.APP_NAME}} </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Responsive bootstrap 4 admin template" name="description" />
+    <meta content="{{ config.AUTHOR_NAME }}" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
+
+    <!-- App css -->
+    <link href="{{url_for('static', filename='assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css"
+        id="bootstrap-stylesheet" />
+    <link href="{{url_for('static', filename='assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{url_for('static', filename='assets/css/app.min.css')}}" rel="stylesheet" type="text/css"
+        id="app-stylesheet" />
+    {% endblock%}
+</head>
+
+<body data-layout="horizontal">
+
+    <!-- Begin page -->
+    <div id="wrapper">
+
+        {% include '_components/header.html' %}
+
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-fluid">
+                    {% macro breadcrumb(title) %}
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box">
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">{{ config.APP_NAME
+                                                }}</a></li>
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard </a></li>
+                                        <li class="breadcrumb-item active">{{ title }}</li>
+                                    </ol>
+                                </div>
+                                <h4 class="page-title">{{ title }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+                    {% endmacro %}
+
+                    {% macro alert() %}
+                    {% for message in get_flashed_messages(with_categories=True) %}
+                    <div class="alert alert-{{ message[0] }}">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        {{ message[1] }}
+                    </div>
+                    {% endfor %}
+                    {% endmacro %}
+
+                    {%block content%}
+                    {% endblock%}
+                </div>
+                <!-- end container-fluid -->
+
+            </div>
+            <!-- end content -->
+
+
+
+            <!-- Footer Start -->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            2023 &copy; {{ config.APP_NAME }} by <a href="">{{ config.AUTHOR_NAME }}</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- end Footer -->
+
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- End Page content -->
+        <!-- ============================================================== -->
+
+    </div>
+
+    <!-- Vendor js -->
+    <script src="{{ url_for('static', filename='assets/js/vendor.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/libs/morris-js/morris.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/libs/raphael/raphael.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/pages/dashboard.init.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/app.min.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+.header {
+    background-color: #AEAEB3;
+    padding: .5rem;
+}
+
+.navigation-menu {
+    border: 1px solid #fff;
+    background-color: #505053;
+    border-left: 0;
+    border-right: 0;
+    color: #fff;
+}
+
+.navigation-menu ul {
+    display: block;
+    margin: 0;
+    padding: .5rem;
+}
+
+.navigation-menu ul li {
+    display: inline-block;
+}
+
+.content {
+    background: url('/Static/background.jpeg') repeat;
+    min-height: 80vh;
+}

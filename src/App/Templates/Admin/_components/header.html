@@ -1,0 +1,39 @@
+<!-- Navigation Bar-->
+<header id="topnav">
+
+    {% include '_components/topmenu.html' %}
+
+    <div class="topbar-menu">
+        <div class="container-fluid">
+            <div id="navigation">
+                <!-- Navigation Menu-->
+                <ul class="navigation-menu">
+
+                    <li>
+                        <a href="{{ url_for('admin.index') }}"> <i class="mdi mdi-view-dashboard"></i>Dashboard</a>
+                    </li>
+
+                    <li>
+                        <a href="{{ url_for('admin.mahasiswa.index') }}"> <i
+                                class="mdi mdi-view-dashboard"></i>Mahasiswa</a>
+                    </li>
+
+
+                    <li>
+                        <a href="#"> <i class="mdi mdi-view-dashboard"></i>Kelas</a>
+                    </li>
+
+                    <li>
+                        <a href="#"> <i class="mdi mdi-view-dashboard"></i>Mata Kuliah</a>
+                    </li>
+                </ul>
+                <!-- End navigation menu -->
+
+                <div class="clearfix"></div>
+            </div>
+            <!-- end #navigation -->
+        </div>
+        <!-- end container -->
+    </div>
+    <!-- end navbar-custom -->
+</header>
