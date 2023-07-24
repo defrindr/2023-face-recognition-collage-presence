@@ -4,8 +4,11 @@
 
 {% block content %}
 
-{{breadcrumb(title)}}
-{{alert()}}
+
+{% import "Admin/_components/macros.html" as macros %}
+{{macros.breadcrumb(title)}}
+{{macros.alert()}}
+
 
 <div class="col-md-12">
     <a href="{{url_for( module + '.index')}}" class="btn btn-danger mb-2">

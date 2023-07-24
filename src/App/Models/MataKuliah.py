@@ -10,6 +10,8 @@ class MataKuliah(db.Model):
     id = Column(Integer, primary_key=True)
     nama = Column(String(255), unique=True)
     flag = Column(Integer, default=1)
+
+    jadwal = db.relationship('Jadwal', back_populates='mata_kuliah')
     pass
 
 

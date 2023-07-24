@@ -1,5 +1,4 @@
 from flask import render_template, request, url_for, flash, redirect, abort
-from App.Admin import MataKuliah
 from App.Core.database import db
 from App.Models.Kelas import Kelas as KelasModel
 from App.Models.KelasMahasiswa import _baseQuery, _fetchById, _fetchByKelas, _fetchByMahasiswa, KelasMahasiswa

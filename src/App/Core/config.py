@@ -6,6 +6,7 @@ class Config:
     # My Config
     BASE_PATH =os.getcwd()
     APP_NAME = os.environ.get('APP_NAME')
+    APP_NAME_SIMPLE = os.environ.get('APP_NAME_SIMPLE')
     AUTHOR_NAME = os.environ.get('AUTHOR_NAME')
     SECRET_KEY = os.environ.get('SECRET_KEY')
     URL_PATH = os.environ.get('URL_PATH')

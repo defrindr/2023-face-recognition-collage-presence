@@ -6,8 +6,10 @@
 
 {% block content %}
 
-{{breadcrumb(title)}}
-{{alert()}}
+{% import "Admin/_components/macros.html" as macros %}
+{{macros.breadcrumb(title)}}
+{{macros.alert()}}
+
 
 <div class="col-md-12">
     <a href="{{url_for('admin.kelas.index')}}" class="btn btn-warning mb-2">

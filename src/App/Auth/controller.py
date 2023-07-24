@@ -41,3 +41,8 @@ def loginAction():
         return redirect(url_for('admin.index'))
     else:
         return redirect(url_for('mahasiswa.index'))
+
+
+def logoutAction():
+    destroySessionAuth()
+    return redirect(url_for('auth.login'))

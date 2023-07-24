@@ -13,6 +13,7 @@ class Kelas(db.Model):
     flag = Column(Integer, default=1)
     
     anggota_kelas = db.relationship('KelasMahasiswa', back_populates='kelas')
+    jadwal = db.relationship('Jadwal', back_populates='kelas')
     pass
 
 

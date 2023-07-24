@@ -3,7 +3,7 @@ from sqlalchemy import or_
 from App.Admin import MataKuliah
 from App.Core.database import db
 from App.Models import Kelas
-from App.Models.Kelas import _baseQuery, _fetchById, Kelas as KelasModel
+from App.Models.Kelas import _baseQuery, _fetchById, Kelas as KelasModel, _getListFakultas, _getListProdi
 
 module = "admin.kelas"
 template = 'Kelas/'
@@ -39,8 +39,8 @@ def index():
 
 def create():
     title = "Tambah Kelas"
-    fakultas = Kelas._getListFakultas()
-    prodi = Kelas._getListProdi()
+    fakultas = _getListFakultas()
+    prodi = _getListProdi()
     return render_template(template + 'create.html', title=title, module=module, fakultas=fakultas, prodi=prodi)
 
 
@@ -72,8 +72,8 @@ def store():
 def edit(id):
     title = "Edit Kelas"
     model = _fetchById(id)
-    fakultas = Kelas._getListFakultas()
-    prodi = Kelas._getListProdi()
+    fakultas = _getListFakultas()
+    prodi = _getListProdi()
     return render_template(template + 'edit.html', title=title, module=module, model=model, fakultas=fakultas, prodi=prodi)
 
 
