@@ -1,5 +1,6 @@
 from hashlib import md5
 from .Base import Base
+from .User import User
 from App.Core.database import db
 from sqlalchemy import Column, String, JSON, Integer, Enum, ForeignKey
 
@@ -33,4 +34,4 @@ def _fetchByMahasiswa(id):
 
 
 def _baseQuery():
-    return KelasMahasiswa.query.filter().order_by(KelasMahasiswa.id.desc())
+    return KelasMahasiswa.query.join(User).filter(User.flag == 1).order_by(KelasMahasiswa.id.desc())

@@ -26,7 +26,7 @@ def loginAction():
     hash_passwd = hashlib.md5(password).hexdigest()
 
     # Check if User Exist
-    user = User.query.filter(User.username == username).first()
+    user = User.query.filter(User.username == username, User.flag == 1).first()
     if user is None:
         flash("Identitas tidak ditemukan")
         return redirect(url_for('auth.login'))

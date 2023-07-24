@@ -20,6 +20,7 @@ def _indexService(kelas, page, per_page, search):
 
     if search != '':
         baseQuery = baseQuery.join(MataKuliahModel).filter(
+            MataKuliahModel.flag == 1,
             or_(
                 JadwalModel.hari.like(f"%{search}%"),
                 JadwalModel.jam_mulai.like(f"%{search}%"),

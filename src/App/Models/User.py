@@ -24,17 +24,15 @@ class User(db.Model):
     anggota_kelas = db.relationship('KelasMahasiswa', back_populates='user')
     pass
 
-
 def _hashPassword(plaintext):
     return md5(str(plaintext).encode()).hexdigest()
 
-
 def _fetchByUsername(username):
-    return User.query.filter(User.username == username).first()
+    return User.query.filter(User.username == username, User.flag == 1).first()
 
 
 def _fetchById(id):
-    return User.query.filter(User.id == id).first()
+    return User.query.filter(User.id == id, User.flag == 1).first()
 
 
 def _baseQuery():
