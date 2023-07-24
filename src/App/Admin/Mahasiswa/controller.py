@@ -1,12 +1,17 @@
-from flask import render_template, request, url_for, flash, redirect
+import io
+import os
+from tempfile import TemporaryDirectory
+import cv2
+from flask import jsonify, render_template, request, url_for, flash, redirect
 from sqlalchemy import or_
 
 from App.Models.User import Role, User, _baseQuery, _fetchById, _fetchByUsername, _hashPassword
 from hashlib import md5
 from App.Core.database import db
+from facerec import training_data
 
 module = "admin.mahasiswa"
-template = 'Mahasiswa/'
+template = 'Admin/Mahasiswa/'
 
 
 def index():
@@ -102,3 +107,28 @@ def destroy(id):
     db.session.commit()
     flash('Data berhasil diubah', 'info')
     return redirect(url_for(f'{module}.index'))
+
+
+def trainingVideo():
+    base_dir = "facerec/training/"
+    temp_dir = f"{base_dir}/temp"
+    face_dir = f"{base_dir}/faces"
+    temp_video_path = temp_dir+'/video.mp4'
+
+    face_label = request.form['face_label']
+    path_training = f"{face_dir}/{face_label}/"
+
+    # Check if 'faces' directory exists, if not, create one
+    if not os.path.exists(path_training):
+        os.makedirs(path_training)
+
+    # Check if 'temp' directory exists, if not, create one
+    if not os.path.exists(temp_dir):
+        os.makedirs(temp_dir)
+
+    # save video
+    video = request.files['video']
+    video.save(temp_video_path)
+    training_data(temp_video_path, face_label)
+
+    return jsonify({'message': 'Video processed successfully!'})

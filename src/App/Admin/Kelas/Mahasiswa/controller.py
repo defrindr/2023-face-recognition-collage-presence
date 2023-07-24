@@ -6,7 +6,7 @@ from .service import _getListMahasiswaNotAssign
 
 
 module = "admin.kelas.mahasiswa"
-template = 'Kelas/Mahasiswa/'
+template = 'Admin/Kelas/Mahasiswa/'
 
 
 def index(kelas):

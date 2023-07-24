@@ -3,7 +3,7 @@ from .service import _bukaPresensi, _createService, _deleteService, _getKelas, _
 
 
 module = "admin.kelas.jadwal"
-template = 'Kelas/Jadwal/'
+template = 'Admin/Kelas/Jadwal/'
 
 
 def index(kelas):

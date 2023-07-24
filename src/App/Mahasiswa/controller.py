@@ -1,2 +1,4 @@
+from flask import render_template
+
 def index():
-    return "index"
+    return render_template("Mahasiswa/index.html")

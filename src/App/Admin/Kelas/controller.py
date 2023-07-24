@@ -6,7 +6,7 @@ from App.Models import Kelas
 from App.Models.Kelas import _baseQuery, _fetchById, Kelas as KelasModel, _getListFakultas, _getListProdi
 
 module = "admin.kelas"
-template = 'Kelas/'
+template = 'Admin/Kelas/'
 
 
 def index():

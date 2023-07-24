@@ -1,0 +1,270 @@
+{% extends 'Mahasiswa/layout.html' %}
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+{% block content %}
+
+{% import "Mahasiswa/_components/macros.html" as macros %}
+{{macros.breadcrumb(title)}}
+{{macros.alert()}}
+
+<!-- Modal -->
+<div class="modal fade" id="training-wajah" tabindex="-1" role="dialog" aria-labelledby="training-wajah"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="training-wajah">Presensi Wajah</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video width="480" height="240" id="camera-preview" autoplay muted></video>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="fs-4" id="res-accuracy">
+                        -
+                    </div>
+                    <div class="fs-6" id="redirect-timer">
+                        -
+                    </div>
+                </div>
+                <div class="mt-3 d-none">
+                    <textarea id="camera-debug" class="form-control" rows="10"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="camera-close" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-primary" id="camera-submit">Mulai</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <form action="{{url_for(module + '.index')}}" class="form">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <select name="per_page" id="per_page" class="form-control">
+                                        {% for value in range(5, 25, 5) %}
+                                        <option value="{{value}}" {% if per_page==value %} selected {% endif %}>
+                                            {{value}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" name="search" value="{{ search }}"
+                                        placeholder="Cara kata kunci ...">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block">
+                                        <i class="ion ion-ios-search"></i> Cari ...
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p>
+                Menampilkan data {{ start_data + 1 }} sampai {{ start_data + len_items }} dari {{ total_data }}
+            </p>
+            <table class="table table-hover table-bordered">
+                <thead>
+                    {% for column_name in headers %}
+                    <th>{{column_name}}</th>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {% if len_items == 0 %}
+                    <tr>
+                        <td colspan="6" class="text-center">Data Kosong</td>
+                    </tr>
+                    {% endif %}
+                    {% for row in pagination.items %}
+                    <tr>
+                        <td> {{ loop.index + (pagination.page * per_page - per_page) }} </td>
+                        <td> {{ row.hari.value }} </td>
+                        <td> {{ row.mata_kuliah.nama }} </td>
+                        <td> {{ row.jam_mulai }} </td>
+                        <td> {{ row.jam_selesai }} </td>
+                        <td>
+                            {% if row.presensi_status == 1 %}
+                            <button id="btn-opencam" data-id="{{ row.id }}" type="button" class="btn btn-primary"
+                                data-toggle="modal" data-target="#training-wajah">
+                                <i class="mdi mdi-camera"></i>
+                                Presensi
+                            </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    {% if pagination.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{{url_for( module + '.index', page=pagination.page-1,search=search, per_page = per_page)}}"
+                            aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% for page_num in pagination.iter_pages() %}
+                    <li class="page-item {% if page_num == pagination.page%} active {% endif %}">
+                        <a class="page-link"
+                            href="{{url_for( module + '.index', page=page_num,search=search, per_page = per_page)}}">{{page_num}}</a>
+                    </li>
+                    {% endfor %}
+                    {% if pagination.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="{{url_for( module + '.index', page=pagination.page+1,search=search)}}"
+                            aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{super()}}
+<script>
+    face_label = "";
+
+    //ask for camera permission
+    navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+        console.log('camera permission granted');
+    }).catch(function (err) {
+        console.log('camera permission denied');
+    });
+
+    //on open camera modal
+    $('#btn-opencam').on('click', function () {
+        face_label = $('#btn-opencam').data('id');
+        //show camera preview
+        $('#training-wajah').on('shown.bs.modal', function () {
+
+            //get camera preview
+            var video = document.getElementById('camera-preview');
+            //get camera
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+                video.srcObject = stream;
+            });
+        });
+    });
+
+    //on camera close   
+    $('#camera-close').on('click', function () {
+        //get camera preview
+        var video = document.getElementById('camera-preview');
+        //get camera
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+            //get video track
+            var videoTrack = stream.getVideoTracks()[0];
+            //stop video track
+            videoTrack.stop();
+            //stop camera preview
+            video.srcObject = null;
+        });
+
+        face_label = "";
+    });
+
+    function camera_button(state) {
+        //if on camera submit text is 'Login', else change to a spinner, disable the button, and change the text to 'Logging in...'
+        //also hide close button
+        if (state == 'on') {
+            $('#camera-submit').html('Login');
+            $('#camera-submit').prop('disabled', false);
+            $('#camera-close').show();
+        } else {
+            $('#camera-submit').html('Loading...');
+            $('#camera-submit').prop('disabled', true);
+            $('#camera-close').hide();
+        }
+    }
+
+
+    //on camera-submit, record 3 seconds of video
+    $('#camera-submit').on('click', function () {
+        //get camera preview
+        var video = document.getElementById('camera-preview');
+        //get camera
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+            //get video track
+            var videoTrack = stream.getVideoTracks()[0];
+            //create recorder
+            var recorder = new MediaRecorder(stream);
+            //create chunks
+            var chunks = [];
+            //on data available
+            recorder.ondataavailable = function (e) {
+                chunks.push(e.data);
+            };
+
+            //on stop
+            recorder.onstop = function (e) {
+                //create blob
+                var blob = new Blob(chunks, { type: 'video/mp4' });
+
+                let form = new FormData;
+                form.append('video', blob);
+                form.append('face_label', face_label);
+                form.append('csrf_token', "{{csrf_token()}}");
+
+                if (face_label !== "") {
+                    fetch("{{url_for('mahasiswa.jadwal.presensiVideo')}}", {
+                        method: 'POST',
+                        body: form,
+                    }).then(res => res.json()).then(res => {
+                        alert(res.message)
+                    }).catch(err => {
+                        alert('Terjadi kesalahan saat memproses video')
+                    })
+                }
+
+                const readableStreamURL = URL.createObjectURL(blob);
+                $('#camera-result').attr('src', readableStreamURL)
+                camera_button('on');
+            };
+
+            //start recording
+            recorder.start();
+            camera_button('off');
+            $('#camera-submit').html('Recording...');
+            //stop recording after 3 seconds
+            setTimeout(function () {
+                recorder.stop();
+                $('#camera-submit').html('Verifying...');
+                //stop camera
+                videoTrack.stop();
+            }, 1000);
+        });
+    });
+</script>
+{% endblock %}

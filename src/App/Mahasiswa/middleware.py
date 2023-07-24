@@ -5,7 +5,6 @@ from flask import abort
 
 def CheckIsLoggedMahasiswa():
     session = getSessionAuth()
-    print(session)
     if (session[SESS_AUTH_ROLE] != Role.MAHASISWA):
         return abort(403)
     

@@ -1,5 +1,7 @@
 import enum
 from hashlib import md5
+
+from App.Models import User
 from .Base import Base
 from App.Core.database import db
 from sqlalchemy import Column, ForeignKey, String, JSON, Integer, Enum, Time

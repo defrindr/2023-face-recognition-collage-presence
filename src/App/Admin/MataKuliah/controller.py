@@ -4,7 +4,7 @@ from App.Core.database import db
 from App.Models.MataKuliah import _baseQuery, _fetchById, _fetchByName, MataKuliah
 
 module = "admin.matakuliah"
-template = 'Mata Kuliah/'
+template = 'Admin/Mata Kuliah/'
 
 
 def index():

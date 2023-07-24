@@ -6,4 +6,5 @@ from flask import abort, redirect, url_for
 def CheckIsLoggedAdmin():
     session = getSessionAuth()
     if (session[SESS_AUTH_ROLE] != Role.ADMIN):
-        return redirect(url_for('auth.login'))
+        return abort(403)
+        # return redirect(url_for('auth.login'))

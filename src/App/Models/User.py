@@ -1,4 +1,5 @@
 from hashlib import md5
+
 from .Base import Base
 from App.Core.database import db
 from sqlalchemy import Column, String, JSON, Integer, Enum

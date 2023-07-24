@@ -1,6 +1,6 @@
 from flask import session
 
-from App.Models.User import Role
+from App.Models.User import Role, User
 
 SESS_AUTH_ID = "id"
 SESS_AUTH_USERNAME = "username"
@@ -25,3 +25,11 @@ def destroySessionAuth():
     session.pop(SESS_AUTH_ID)
     session.pop(SESS_AUTH_USERNAME)
     session.pop(SESS_AUTH_ROLE)
+
+
+def loggedInUser():
+    id = session[SESS_AUTH_ID]
+    return User.query.filter(
+        User.flag == 1,
+        User.id == id
+    ).first()
