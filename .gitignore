@@ -3,3 +3,4 @@ __pycache__/
 flask_session
 trained_face_recognizer.yml
 dataset/
+.DS_Store
