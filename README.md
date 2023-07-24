@@ -37,7 +37,16 @@ source source myenv/bin/activate
 cd src
 ```
 
-4. Running project
+4. Install requirements
+
+```sh
+pip install -r requirements.txt
+```
+
+4. Atur database, konfigurasi ada di .flaskenv
+
+
+5. Running project
 
 ```sh
 flask run

@@ -1,4 +1,4 @@
-myenv
+myvenv
 __pycache__/
 flask_session
 trained_face_recognizer.yml

@@ -1,5 +1,6 @@
 from flask import render_template, request, url_for, flash, redirect, abort
 from App.Core.database import db
+from App.Models import User
 from App.Models.Kelas import Kelas as KelasModel
 from App.Models.KelasMahasiswa import _baseQuery, _fetchById, _fetchByKelas, _fetchByMahasiswa, KelasMahasiswa
 from .service import _getListMahasiswaNotAssign
@@ -24,7 +25,12 @@ def index(kelas):
 
     if search != '':
         baseQuery = baseQuery.filter(
-            KelasMahasiswa.nama.like(f"%{search}%")
+            KelasMahasiswa.kelas_id == kelas,
+            User.name.like(f"%{search}%")
+        )
+    else:
+        baseQuery = baseQuery.filter(
+            KelasMahasiswa.kelas_id == kelas
         )
         pass
 
