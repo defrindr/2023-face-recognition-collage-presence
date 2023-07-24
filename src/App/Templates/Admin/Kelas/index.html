@@ -83,7 +83,7 @@
                             <a href="{{url_for( module + '.edit', id=row.id)}}" class="btn btn-warning mt-1 mr-1">
                                 <i class="mdi mdi-pencil"></i> Edit
                             </a>
-                            <form action="{{url_for( module + '.destroy', id=row.id)}}" class="d-inline" method="post">
+                            <form action="{{url_for( module + '.destroy', id=row.id)}}" class="d-inline" method="post" onsubmit="return confirm('Apakah Anda Yakin ?')">
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                                 <input type="hidden" name="_method" value="DELETE" />
                                 <button class="btn btn-danger mt-1 mr-1">

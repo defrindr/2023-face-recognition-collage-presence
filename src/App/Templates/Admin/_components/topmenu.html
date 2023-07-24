@@ -49,7 +49,7 @@
 
                     <!-- item-->
 
-                    <form action="{{url_for('auth.logoutAction')}}" class="d-inline" method="post">
+                    <form action="{{url_for('auth.logoutAction')}}" class="d-inline" method="post" onsubmit="return confirm('Apakah Anda Yakin ?')">
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                         <button class="dropdown-item notify-item mt-1 mr-1">
                             <i class="mdi mdi-logout-variant"></i>

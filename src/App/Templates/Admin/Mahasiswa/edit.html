@@ -16,7 +16,7 @@
     <div class="card">
         <div class="card-body">
 
-            <form action="{{url_for(module + '.update', id=model.id)}}" class="form" method="post">
+            <form action="{{url_for(module + '.update', id=model.id)}}" class="form" method="post" onsubmit="return confirm('Apakah Anda Yakin ?')">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <input type="hidden" name="_method" value="PUT" />
                 <div class="form-group">
