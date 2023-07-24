@@ -37,7 +37,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="camera-close" data-dismiss="modal">Tutup</button>
-                <button type="button" class="btn btn-primary" id="camera-submit">Mulai</button>
+                <button type="button" class="btn btn-primary" id="camera-submit">Presensi</button>
             </div>
         </div>
     </div>
@@ -199,7 +199,7 @@
         //if on camera submit text is 'Login', else change to a spinner, disable the button, and change the text to 'Logging in...'
         //also hide close button
         if (state == 'on') {
-            $('#camera-submit').html('Login');
+            $('#camera-submit').html('Presensi');
             $('#camera-submit').prop('disabled', false);
             $('#camera-close').show();
         } else {
