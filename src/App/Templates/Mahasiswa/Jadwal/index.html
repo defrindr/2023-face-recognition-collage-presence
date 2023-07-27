@@ -104,7 +104,9 @@
                         <td> {{ row.jam_mulai }} </td>
                         <td> {{ row.jam_selesai }} </td>
                         <td>
-                            {% if row.presensi_status == 1 %}
+                            {% if row.hasPresensiToday() == True %}
+                            Sudah Absen
+                            {% elif row.presensi_status == 1 %}
                             <button id="btn-opencam" data-id="{{ row.id }}" type="button" class="btn btn-primary"
                                 data-toggle="modal" data-target="#training-wajah">
                                 <i class="mdi mdi-camera"></i>
@@ -184,8 +186,7 @@
         var video = document.getElementById('camera-preview');
         //get camera
         navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
-            //get video track
-            var videoTrack = stream.getVideoTracks()[0];
+            //get video track var videoTrack = stream.getVideoTracks()[0];
             //stop video track
             videoTrack.stop();
             //stop camera preview
@@ -238,19 +239,21 @@
                 form.append('csrf_token', "{{csrf_token()}}");
 
                 if (face_label !== "") {
+                    $('#camera-submit').html('Sending data ...');
                     fetch("{{url_for('mahasiswa.jadwal.presensiVideo')}}", {
                         method: 'POST',
                         body: form,
                     }).then(res => res.json()).then(res => {
                         alert(res.message)
+                        camera_button('on');
                     }).catch(err => {
                         alert('Terjadi kesalahan saat memproses video')
+                        camera_button('on');
                     })
                 }
 
                 const readableStreamURL = URL.createObjectURL(blob);
                 $('#camera-result').attr('src', readableStreamURL)
-                camera_button('on');
             };
 
             //start recording

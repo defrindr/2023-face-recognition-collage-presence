@@ -254,19 +254,21 @@
                 console.log(1)
                 if (face_label !== "") {
                     console.log(5)
+                    $('#camera-submit').html('Data Sending ....');
                     fetch("{{url_for('admin.mahasiswa.trainingVideo')}}", {
                         method: 'POST',
                         body: form,
                     }).then(res => res.json()).then(res => {
                         alert(res.message)
+                        camera_button('on');
                     }).catch(err => {
                         alert('Terjadi kesalahan saat memproses video')
+                        camera_button('on');
                     })
                 }
 
                 const readableStreamURL = URL.createObjectURL(blob);
                 $('#camera-result').attr('src', readableStreamURL)
-                camera_button('on');
             };
 
             //start recording

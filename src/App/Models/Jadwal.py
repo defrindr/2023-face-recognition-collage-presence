@@ -2,9 +2,11 @@ import enum
 from hashlib import md5
 
 from App.Models import User
+from App.Models.Presensi import Presensi
 from .Base import Base
 from App.Core.database import db
 from sqlalchemy import Column, ForeignKey, String, JSON, Integer, Enum, Time
+from datetime import date
 
 
 class Hari(enum.Enum):
@@ -31,6 +33,12 @@ class Jadwal(db.Model):
 
     kelas = db.relationship('Kelas', back_populates='jadwal')
     mata_kuliah = db.relationship('MataKuliah', back_populates='jadwal')
+
+    def hasPresensiToday(self):
+        today = date.today()
+        attendance = Presensi.query.filter_by(
+            tanggal=today, jadwal_id=self.id).first()
+        return attendance is not None
     pass
 
 
