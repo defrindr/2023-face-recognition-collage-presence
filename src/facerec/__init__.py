@@ -113,13 +113,6 @@ def predict_face(video):
 
     return highest_confidence, highest_confidence_id
 
-
-train_lbph_face_recognizer(
-    "training/faces",
-    "trained_face_recognizer.yml",
-    True
-)
-
 # if __name__ == "__main__":
 #     training_data_dir = "recognition/training/dataset"
 #     test_image_path = "recognition/training/dani.jpg"
