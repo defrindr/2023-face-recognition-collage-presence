@@ -34,10 +34,10 @@ class Jadwal(db.Model):
     kelas = db.relationship('Kelas', back_populates='jadwal')
     mata_kuliah = db.relationship('MataKuliah', back_populates='jadwal')
 
-    def hasPresensiToday(self):
+    def hasPresensiToday(self, user_id):
         today = date.today()
         attendance = Presensi.query.filter_by(
-            tanggal=today, jadwal_id=self.id).first()
+            tanggal=today, jadwal_id=self.id, user_id=user_id).first()
         return attendance is not None
     pass
 

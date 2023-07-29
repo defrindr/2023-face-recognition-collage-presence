@@ -52,6 +52,7 @@ def index():
         total_data=total_data,
         search=search,
         kelas=kelas,
+        user_login = user_login,
     )
 
 

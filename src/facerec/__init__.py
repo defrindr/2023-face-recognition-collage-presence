@@ -41,9 +41,18 @@ def train_lbph_face_recognizer(data_dir, training_file, force=False):
 def training_data(temp_video_path, name):
     base_folder = "training/faces"
     folder = f"training/faces/{name}"
+    training_file = "trained_face_recognizer.yml"
     # Process the video and save face images with labels
     video_capture = cv2.VideoCapture(temp_video_path)
     face_cascade = cv2.CascadeClassifier('lbpcascade_frontalface.xml')
+
+    if os.path.exists(f"{current_directory}/{training_file}") == True:
+        confidence, user_id = predict_face(temp_video_path)
+        print(confidence)
+
+        if confidence > 70:
+            return False
+        pass
 
     face_counter = 0
     while True:
@@ -70,9 +79,11 @@ def training_data(temp_video_path, name):
     print("uwuwu")
     train_lbph_face_recognizer(
         base_folder,
-        "trained_face_recognizer.yml",
+        training_file,
         True
     )
+
+    return True
 
 
 def predict_face(video):
@@ -107,7 +118,7 @@ def predict_face(video):
 
             if confidence > highest_confidence:
                 highest_confidence = confidence
-                highest_confidence_id = labels[id]
+                highest_confidence_id = labels.get(id, 0)
 
     video_capture.release()
 

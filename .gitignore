@@ -4,3 +4,4 @@ flask_session
 trained_face_recognizer.yml
 dataset/
 .DS_Store
+src/facerec/training/*

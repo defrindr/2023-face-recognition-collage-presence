@@ -129,6 +129,5 @@ def trainingVideo():
     # save video
     video = request.files['video']
     video.save(temp_video_path)
-    training_data(temp_video_path, face_label)
-
-    return jsonify({'message': 'Video processed successfully!'})
+    result = training_data(temp_video_path, face_label)
+    return jsonify({'message': 'Video processed successfully!' if result == True else 'Wajah telah terdaftar pada sistem kami !'})
