@@ -28,7 +28,7 @@ python3 -m venv myvenv
 3. Activate Virtual Environment
 
 ```sh
-source source myenv/bin/activate
+source myvenv/bin/activate
 ```
 
 3. Go to directory src
