@@ -4,7 +4,9 @@ from .Base import Base
 from App.Core.database import db
 from sqlalchemy import Column, String, JSON, Integer, Enum
 import enum
-
+import os
+from glob import glob
+from flask import current_app as app
 
 class Role(enum.Enum):
     ADMIN = "ADMIN"
@@ -20,9 +22,37 @@ class User(db.Model):
     password = Column(String(255))
     role = Column(Enum(Role))
     name = Column(String(255))
+    photo = Column(String(255))
     flag = Column(Integer, default=1)
 
     anggota_kelas = db.relationship('KelasMahasiswa', back_populates='user')
+
+    def path(self):
+        base_dir = "facerec/training/"
+        face_dir = f"{base_dir}/faces"
+        face_label = self.id
+        path_training = f"{face_dir}/{face_label}/"
+        return path_training
+
+    def hasTraining(self):
+        return os.path.exists(self.path())
+
+    def alreadyTraining(self):
+        if self.hasTraining() == True:
+            return "Sudah"
+        else:
+            return "Belum"
+
+    def getPhotoProfile(self):
+        path = app.root_path + "/static/profiles/" + self.username + ".png"
+
+        if os.path.exists(path):
+            return "/Static/profiles/" + self.username + ".png"
+        else:
+            return ""
+
+
+
     pass
 
 def _hashPassword(plaintext):

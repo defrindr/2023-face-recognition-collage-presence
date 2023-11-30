@@ -96,7 +96,7 @@
                 <tbody>
                     {% if len_items == 0 %}
                     <tr>
-                        <td colspan="3" class="text-center">Data Kosong</td>
+                        <td colspan="4" class="text-center">Data Kosong</td>
                     </tr>
                     {% endif %}
                     {% for row in pagination.items %}
@@ -104,6 +104,7 @@
                         <td> {{ loop.index + (pagination.page * per_page - per_page) }} </td>
                         <td> {{ row.username }} </td>
                         <td> {{ row.name }} </td>
+                        <td> {{ row.alreadyTraining() }} </td>
                         <td>
                             <!-- Button trigger modal -->
                             <button data-id="{{ row.id }}" type="button" class="btn btn-primary btn-opencam"

@@ -9,6 +9,7 @@ from App.Models.User import Role, User, _baseQuery, _fetchById, _fetchByUsername
 from hashlib import md5
 from App.Core.database import db
 from facerec import training_data
+from flask import current_app as app
 
 module = "admin.mahasiswa"
 template = 'Admin/Mahasiswa/'
@@ -17,7 +18,7 @@ template = 'Admin/Mahasiswa/'
 def index():
 
     title = "Management Mahasiswa"
-    headers = ['No', 'NIM', 'Name', 'Aksi']
+    headers = ['No', 'NIM', 'Name', 'Sudah Training' 'Aksi']
 
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
@@ -87,14 +88,20 @@ def edit(id):
 def update(id):
     form = request.form
     form_keys = form.keys()
+    file = request.files['photo']
     model = _fetchById(id)
-
     if "nim" in form_keys:
         model.username = form['nim']
     if "name" in form_keys:
         model.name = form['name']
-    if "password" in form_keys:
+    if "password" in form_keys and form['password']:
         model.password = _hashPassword(form['password'])
+    if file:
+        path = app.root_path + "/static/profiles/"
+        model.photo = model.username + ".png"
+        if os.path.exists(path) == False:
+            os.makedirs(path)
+        file.save( path+ model.photo)
 
     db.session.commit()
     flash('Data berhasil diubah', 'info')

@@ -23,14 +23,8 @@
             </div>
             <div class="modal-body">
                 <video width="480" height="240" id="camera-preview" autoplay muted></video>
-                <div class="d-flex justify-content-between align-items-center">
-                    <div class="fs-4" id="res-accuracy">
-                        -
-                    </div>
-                    <div class="fs-6" id="redirect-timer">
-                        -
-                    </div>
-                </div>
+                <p id="res-accuracy"></p>
+                <p id="res-message"></p>
                 <div class="mt-3 d-none">
                     <textarea id="camera-debug" class="form-control" rows="10"></textarea>
                 </div>
@@ -244,7 +238,9 @@
                         method: 'POST',
                         body: form,
                     }).then(res => res.json()).then(res => {
-                        alert(res.message)
+
+                        $('#res-accuracy').text('CONFIDENCE : ' + res.confidence)
+                        $('#res-message').text('PESAN : ' + res.message)
                         camera_button('on');
                     }).catch(err => {
                         alert('Terjadi kesalahan saat memproses video')

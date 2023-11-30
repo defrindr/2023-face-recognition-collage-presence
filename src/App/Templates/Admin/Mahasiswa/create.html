@@ -16,7 +16,7 @@
     <div class="card">
         <div class="card-body">
 
-            <form action="{{url_for(module + '.store')}}" class="form" method="post" onsubmit="return confirm('Apakah Anda Yakin ?')">
+            <form action="{{url_for(module + '.store')}}" class="form" method="post" onsubmit="return confirm('Apakah Anda Yakin ?')" enctype="multipart/form-data">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="form-group">
                     <label for="nim">NIM</label>

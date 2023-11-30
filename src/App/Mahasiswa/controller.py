@@ -1,4 +1,6 @@
 from flask import render_template
+from App.Auth.auth_session import loggedInUser
 
 def index():
-    return render_template("Mahasiswa/index.html")
+    user = loggedInUser()
+    return render_template("Mahasiswa/index.html", user=user)
