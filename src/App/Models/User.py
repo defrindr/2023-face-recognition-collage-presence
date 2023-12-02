@@ -65,6 +65,11 @@ def _fetchByUsername(username):
 def _fetchById(id):
     return User.query.filter(User.id == id, User.flag == 1).first()
 
+def _baseQueryAdmin():
+    return User.query.filter(
+        User.role == Role.ADMIN,
+        User.flag == 1
+    ).order_by(User.username)
 
 def _baseQuery():
     return User.query.filter(

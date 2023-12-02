@@ -1,6 +1,7 @@
 import cv2
 import os
 import numpy as np
+from App.Core.config import Config
 
 current_directory = os.getcwd() + "/facerec"
 
@@ -50,7 +51,8 @@ def training_data(temp_video_path, name):
         confidence, user_id = predict_face(temp_video_path)
         print(confidence)
 
-        if confidence > 70:
+        config= Config()
+        if confidence < config.MINIMUM_CONFIDENCE_TRAINING:
             return False
         pass
 

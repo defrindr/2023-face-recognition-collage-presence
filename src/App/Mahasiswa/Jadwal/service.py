@@ -4,6 +4,7 @@ import os
 from flask import jsonify
 from sqlalchemy import or_
 from App.Core.database import db
+from App.Core.config import Config
 from App.Auth.auth_session import loggedInUser
 from App.Models import Kelas as KelasModel, KelasMahasiswa, Presensi, User
 from App.Models import Jadwal as JadwalModel
@@ -67,7 +68,8 @@ def _presensiVideo(request):
     if int(id_user) != current_user.id:
         return jsonify({'message': 'Presensi gagal, terdeteksi sebagai orang lain!', 'confidence': c, 'label': id_user})
 
-    if c < 70:
+    config= Config()
+    if c < config.MINIMUM_CONFIDENCE_ATTENDANCE:
         return jsonify({'message': 'Gambar kurang jelas!', 'confidence': c, 'label': id_user})
 
     jadwal = JadwalModel.query.join(KelasModel, KelasMahasiswa, User).filter(

@@ -5,26 +5,26 @@ import cv2
 from flask import jsonify, render_template, request, url_for, flash, redirect
 from sqlalchemy import or_
 
-from App.Models.User import Role, User, _baseQuery, _fetchById, _fetchByUsername, _hashPassword
+from App.Models.User import Role, User, _baseQueryAdmin, _fetchById, _fetchByUsername, _hashPassword
 from hashlib import md5
 from App.Core.database import db
 from facerec import training_data
 from flask import current_app as app
 
-module = "admin.mahasiswa"
-template = 'Admin/Mahasiswa/'
+module = "admin.admin"
+template = 'Admin/Admin/'
 
 
 def index():
 
-    title = "Management Mahasiswa"
-    headers = ['No', 'NIM', 'Name', 'Sudah Training', 'Aksi']
+    title = "Management Admin"
+    headers = ['No', 'NIM', 'Name', 'Aksi']
 
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
     search = request.args.get('search', '', type=str)
 
-    baseQuery = _baseQuery()
+    baseQuery = _baseQueryAdmin()
 
     if search != '':
         baseQuery = baseQuery.filter(
@@ -43,7 +43,7 @@ def index():
 
 
 def create():
-    title = "Tambah Mahasiswa"
+    title = "Tambah Admin"
     return render_template(template + 'create.html', title=title, module=module)
 
 
@@ -66,7 +66,7 @@ def store():
     model = User(
         username=form['nim'],
         name=form['name'],
-        role=Role.MAHASISWA,
+        role=Role.ADMIN,
         password=_hashPassword(form['password']),
         flag=1
     )
@@ -80,7 +80,7 @@ def store():
 
 
 def edit(id):
-    title = "Edit Mahasiswa"
+    title = "Edit Admin"
     model = _fetchById(id)
     return render_template(template + 'edit.html', title=title, module=module, model=model)
 
@@ -110,31 +110,10 @@ def update(id):
 
 def destroy(id):
     model = _fetchById(id)
+    if model.id == 4:
+        flash('Tidak dapat menghapus Admin Utama', 'danger')
+        return redirect(url_for(f'{module}.index'))
     model.flag = 0
     db.session.commit()
     flash('Data berhasil diubah', 'info')
     return redirect(url_for(f'{module}.index'))
-
-
-def trainingVideo():
-    base_dir = "facerec/training/"
-    temp_dir = f"{base_dir}/temp"
-    face_dir = f"{base_dir}/faces"
-    temp_video_path = temp_dir+'/video.mp4'
-
-    face_label = request.form['face_label']
-    path_training = f"{face_dir}/{face_label}/"
-
-    # Check if 'faces' directory exists, if not, create one
-    if not os.path.exists(path_training):
-        os.makedirs(path_training)
-
-    # Check if 'temp' directory exists, if not, create one
-    if not os.path.exists(temp_dir):
-        os.makedirs(temp_dir)
-
-    # save video
-    video = request.files['video']
-    video.save(temp_video_path)
-    result = training_data(temp_video_path, face_label)
-    return jsonify({'message': 'Video processed successfully!' if result == True else 'Wajah telah terdaftar pada sistem kami !'})

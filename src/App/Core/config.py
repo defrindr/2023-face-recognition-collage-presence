@@ -16,3 +16,5 @@ class Config:
     # Session Libraru
     SESSION_PERMANENT = False
     SESSION_TYPE = "filesystem"
+    MINIMUM_CONFIDENCE_ATTENDANCE = 70
+    MINIMUM_CONFIDENCE_TRAINING = 70
