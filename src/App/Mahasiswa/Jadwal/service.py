@@ -10,6 +10,7 @@ from App.Models import Kelas as KelasModel, KelasMahasiswa, Presensi, User
 from App.Models import Jadwal as JadwalModel
 from App.Models import MataKuliah as MataKuliahModel
 from App.Models.Jadwal import _baseQuery
+from App.Models.User import _fetchById
 from facerec import predict_face
 
 
@@ -65,12 +66,13 @@ def _presensiVideo(request):
     c, id_user = predict_face(temp_video_path)
     current_user = loggedInUser()
 
+    user = _fetchById(id_user)
     if int(id_user) != current_user.id:
-        return jsonify({'message': 'Presensi gagal, terdeteksi sebagai orang lain!', 'confidence': c, 'label': id_user})
+        return jsonify({'message': 'Presensi gagal, terdeteksi sebagai orang lain!', 'confidence': c, 'label': id_user, 'username': user.name})
 
     config= Config()
     if c < config.MINIMUM_CONFIDENCE_ATTENDANCE:
-        return jsonify({'message': 'Gambar kurang jelas!', 'confidence': c, 'label': id_user})
+        return jsonify({'message': 'Gambar kurang jelas!', 'confidence': c, 'label': id_user, 'username': user.name})
 
     jadwal = JadwalModel.query.join(KelasModel, KelasMahasiswa, User).filter(
         User.id == current_user.id,
@@ -78,7 +80,7 @@ def _presensiVideo(request):
     ).first()
 
     if jadwal is None:
-        return jsonify({'message': 'Presensi gagal, tidak dapat melakukan presensi!', 'confidence': c, 'label': id_user})
+        return jsonify({'message': 'Presensi gagal, tidak dapat melakukan presensi!', 'confidence': c, 'label': id_user, 'username': user.name})
 
     # Get the current date and time
     current_datetime = datetime.now()
@@ -91,7 +93,7 @@ def _presensiVideo(request):
     presence_exist = Presensi.query.filter(Presensi.jadwal_id == id, Presensi.user_id == current_user.id, Presensi.tanggal == formatted_date).first()
     
     if presence_exist is not None:
-        return jsonify({'message': 'Presensi gagal, sudah melakukan presensi sebelumnya!', 'confidence': c, 'label': id_user})
+        return jsonify({'message': 'Presensi gagal, sudah melakukan presensi sebelumnya!', 'confidence': c, 'label': id_user, 'username': user.name})
     
     # insert data
     presensi_record = Presensi(
@@ -107,4 +109,4 @@ def _presensiVideo(request):
     db.session.add(presensi_record)
     db.session.commit()
 
-    return jsonify({'message': 'Presensi berhasil!', 'confidence': c, 'label': id_user})
+    return jsonify({'message': 'Presensi berhasil!', 'confidence': c, 'label': id_user, 'username': user.name})

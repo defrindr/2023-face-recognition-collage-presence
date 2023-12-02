@@ -25,6 +25,7 @@
                 <video width="480" height="240" id="camera-preview" autoplay muted></video>
                 <p id="res-accuracy"></p>
                 <p id="res-message"></p>
+                <p id="sebagai"></p>
                 <div class="mt-3 d-none">
                     <textarea id="camera-debug" class="form-control" rows="10"></textarea>
                 </div>
@@ -241,6 +242,7 @@
 
                         $('#res-accuracy').text('CONFIDENCE : ' + res.confidence)
                         $('#res-message').text('PESAN : ' + res.message)
+                        $('#sebagai').text('Sebagai : ' + res.username)
                         camera_button('on');
                     }).catch(err => {
                         alert('Terjadi kesalahan saat memproses video')
