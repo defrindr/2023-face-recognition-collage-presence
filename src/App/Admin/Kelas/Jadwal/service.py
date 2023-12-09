@@ -2,6 +2,7 @@ from datetime import datetime
 from sqlalchemy import Time, and_, between, cast, or_
 from App.Models import Kelas as KelasModel
 from App.Models import Jadwal as JadwalModel
+from App.Models import Presensi as PresensiModel
 from App.Models import MataKuliah as MataKuliahModel
 from App.Models.Jadwal import Hari, _fetchById
 from App.Core.database import db
@@ -154,8 +155,6 @@ def _bukaPresensi(kelas, id):
     current_date = current_datetime.strftime("%Y-%m-%d")
     current_unixtime = current_datetime.timestamp()
     hari = _english_to_indonesian_day(current_day_name)
-    
-    print(hari)
 
     if hari == "Invalid Day":
         return {
@@ -179,6 +178,34 @@ def _bukaPresensi(kelas, id):
         }
 
     model.presensi_status = 1
+
+    # generate absensi untuk semua siswa
+    anggota_kelas = model.kelas.anggota_kelas
+    
+    # Get the current date and time
+    current_datetime = datetime.now()
+
+    # Format the date and time as 'Y-m-d H:i:s'
+    formatted_date = current_datetime.strftime('%Y-%m-%d')
+    for siswa in anggota_kelas:
+        jadwal_presensi = PresensiModel.query.filter(
+                PresensiModel.user_id==siswa.mahasiswa_id,
+                PresensiModel.kelas_id==model.kelas_id,
+                PresensiModel.jadwal_id==model.id,
+                PresensiModel.mata_kuliah_id==model.mata_kuliah_id,
+                PresensiModel.tanggal==formatted_date
+        ).first()
+        if(jadwal_presensi == None) :
+            model_presensi = PresensiModel(
+                user_id=siswa.mahasiswa_id,
+                kelas_id=model.kelas_id,
+                jadwal_id=model.id,
+                mata_kuliah_id=model.mata_kuliah_id,
+                tanggal=formatted_date,
+                status=0
+            )
+            db.session.add(model_presensi)
+
     db.session.commit()
     return {
         'success': True,

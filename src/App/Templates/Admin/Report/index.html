@@ -1,0 +1,99 @@
+{% extends 'Admin/layout.html' %}
+
+{% block title %} {{title}} {% endblock %}
+
+
+
+{% block content %}
+
+{% import "Admin/_components/macros.html" as macros %}
+{{macros.breadcrumb(title)}}
+{{macros.alert()}}
+
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-body">
+            <form action="{{url_for(module + '.index', id=id)}}" class="form">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <select name="month" id="month" class="form-control">
+                                        {% for value in range(1, 12 + 1) %}
+                                        <option value="{{value}}" {% if month == value %} selected {% endif %}>
+                                            {{value}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <select name="year" id="year" class="form-control">
+                                        {% for value in range(currentYear - 3, currentYear + 1) %}
+                                        <option value="{{value}}" {% if year == value %} selected {% endif %}>
+                                            {{value}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-7">
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block">
+                                        <i class="ion ion-ios-search"></i> Cari ...
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p>
+                Menampilkan data {{ start_data + 1 }} sampai {{ start_data + len_items }} dari {{ total_data }}
+            </p>
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">No</th>
+                            <th rowspan="2" style="vertical-align : middle;text-align:center;">Nama</th>
+                            <th colspan="{{jumlah_hari_dalam_1bulan}}" style="text-align:center;">Tanggal</th>
+                        </tr>
+                        <tr>
+                            {% for i in range(1, jumlah_hari_dalam_1bulan + 1) %}
+                            <th>{{i}}/{{month}}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if len_items == 0 %}
+                        <tr>
+                            <td colspan="4" class="text-center">Data Kosong</td>
+                        </tr>
+                        {% endif %}
+                        {% for row in pagination.items %}
+                        <tr>
+                            <td> {{ loop.index + (pagination.page * per_page - per_page) }} </td>
+                            <td> {{ row.User.name }} </td>
+                            {% for i in range(1, jumlah_hari_dalam_1bulan + 1) %}
+                            <td> {{ row.User._checkAbsensiHariIni(i, month, year, row.Jadwal.id) }} </td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+{{super()}}
+{% endblock %}

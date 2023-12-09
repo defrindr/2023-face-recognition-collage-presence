@@ -5,6 +5,7 @@ from App.Core.database import db
 from sqlalchemy import Column, String, JSON, Integer, Enum
 import enum
 import os
+from App.Models.Presensi import Presensi
 from glob import glob
 from flask import current_app as app
 
@@ -36,6 +37,20 @@ class User(db.Model):
 
     def hasTraining(self):
         return os.path.exists(self.path())
+
+    def _checkAbsensiHariIni(self, tanggal, bulan, tahun, jadwal_id):
+        adaJadwal = db.session.query(Presensi).filter(
+            Presensi.tanggal == f"{tahun}-{bulan}-{tanggal}",
+            Presensi.user_id == self.id,
+            Presensi.jadwal_id == jadwal_id
+        ).first()
+
+        if adaJadwal is None: 
+            return ""
+        elif adaJadwal.status == 1:
+            return "✓"
+        else:
+            return "x"
 
     def alreadyTraining(self):
         if self.hasTraining() == True:

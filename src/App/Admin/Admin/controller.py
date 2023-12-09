@@ -51,6 +51,7 @@ def store():
     # validation
     required_fields = ['nim', 'name', 'password']
     form = request.form
+    file = request.files['photo']
     for field in required_fields:
         if (form[field] is None):
             flash('Terjadi kesalahan saat menambahkan data', 'danger')
@@ -60,6 +61,16 @@ def store():
     exist = _fetchByUsername(form['nim'])
     if exist is not None:
         flash('Data telah ditambahkan sebelumnya', 'danger')
+        return redirect(url_for(f'{module}.create'))
+
+    if(file) :
+        path = app.root_path + "/static/profiles/"
+        model.photo = model.username + ".png"
+        if os.path.exists(path) == False:
+            os.makedirs(path)
+        file.save( path+ model.photo)
+    else :
+        flash('Foto tidak boleh kosong', 'danger')
         return redirect(url_for(f'{module}.create'))
 
     # save model

@@ -78,6 +78,9 @@
                         <td> {{ row.jam_mulai }} </td>
                         <td> {{ row.jam_selesai }} </td>
                         <td>
+                            <a href="{{url_for('admin.report.index', id=row.id)}}" class="btn btn-success mt-1 mr-1">
+                                <i class="mdi mdi-file"></i> Report
+                            </a>
                             {% if row.presensi_status == 0 %}
                             <form action="{{url_for( module + '.bukaPresensi', id=row.id, kelas=kelas)}}"
                                 class="d-inline" method="post" onsubmit="return confirm('Apakah Anda Yakin ?')">

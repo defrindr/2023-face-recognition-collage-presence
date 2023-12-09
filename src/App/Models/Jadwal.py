@@ -2,6 +2,8 @@ import enum
 from hashlib import md5
 
 from App.Models import User
+from App.Models import KelasMahasiswa
+from App.Models import Kelas
 from App.Models.Presensi import Presensi
 from .Base import Base
 from App.Core.database import db
@@ -38,13 +40,25 @@ class Jadwal(db.Model):
         today = date.today()
         attendance = Presensi.query.filter_by(
             tanggal=today, jadwal_id=self.id, user_id=user_id).first()
-        return attendance is not None
+        return attendance is not None and attendance.status == 1
     pass
 
 
 def _fetchById(id):
     return Jadwal.query.filter(Jadwal.id == id, Jadwal.flag == 1).first()
 
+
+def _AnggotaKelas(id):
+    return db.session.query(
+        Jadwal, KelasMahasiswa, User
+    ).filter(
+        Jadwal.kelas_id == KelasMahasiswa.kelas_id
+    ).filter(
+        KelasMahasiswa.mahasiswa_id == User.id
+    ).filter(
+        Jadwal.id == id,
+        User.flag == 1
+    )
 
 def _baseQuery():
     return Jadwal.query.filter(

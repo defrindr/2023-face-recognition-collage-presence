@@ -49,11 +49,16 @@ def training_data(temp_video_path, name):
 
     if os.path.exists(f"{current_directory}/{training_file}") == True:
         confidence, user_id = predict_face(temp_video_path)
-        print(confidence)
+        print(confidence, user_id)
 
         config= Config()
-        if confidence < config.MINIMUM_CONFIDENCE_TRAINING:
-            return False
+        if confidence > config.MINIMUM_CONFIDENCE_TRAINING:
+            if user_id == name:
+                print("Deteksi ulang")
+            elif user_id == 0:
+                print("Deteksi ulang")
+            else:
+                return False
         pass
 
     face_counter = 0

@@ -99,9 +99,9 @@
                         <td> {{ row.jam_mulai }} </td>
                         <td> {{ row.jam_selesai }} </td>
                         <td>
-                            {% if row.hasPresensiToday(user_login.id) == True %}
-                            Sudah Absen
-                            {% elif row.presensi_status == 1 %}
+                            {% if row.hasPresensiToday(user_login.id) %}
+                                Sudah Absen
+                            {% elif row.presensi_status == 1  %}
                             <button id="btn-opencam" data-id="{{ row.id }}" type="button" class="btn btn-primary"
                                 data-toggle="modal" data-target="#training-wajah">
                                 <i class="mdi mdi-camera"></i>

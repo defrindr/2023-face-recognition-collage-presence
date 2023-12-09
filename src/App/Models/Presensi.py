@@ -12,6 +12,7 @@ class Presensi(db.Model):
     kelas_id = Column(Integer, ForeignKey('kelas.id'))
     jadwal_id = Column(Integer, ForeignKey('jadwal.id'))
     mata_kuliah_id = Column(Integer, ForeignKey('mata_kuliah.id'))
+    status = Column(Integer)
     tanggal = Column(Date)
     jam = Column(Time)
     photo = Column(String, default='-')

@@ -92,21 +92,23 @@ def _presensiVideo(request):
     # check if already present
     presence_exist = Presensi.query.filter(Presensi.jadwal_id == id, Presensi.user_id == current_user.id, Presensi.tanggal == formatted_date).first()
     
-    if presence_exist is not None:
+    if presence_exist is not None and presence_exist.status == 1:
         return jsonify({'message': 'Presensi gagal, sudah melakukan presensi sebelumnya!', 'confidence': c, 'label': id_user, 'username': user.name})
     
     # insert data
-    presensi_record = Presensi(
-        user_id=current_user.id,
-        jadwal_id=id,
-        kelas_id=jadwal.kelas_id,
-        mata_kuliah_id=jadwal.mata_kuliah_id,
-        tanggal=formatted_date,
-        jam=formatted_time,
-        photo="null"
-    )
+    presensi_record = Presensi.query.filter(
+        Presensi.user_id==current_user.id,
+        Presensi.jadwal_id==id,
+        Presensi.kelas_id==jadwal.kelas_id,
+        Presensi.mata_kuliah_id==jadwal.mata_kuliah_id,
+        Presensi.tanggal==formatted_date,
+    ).first()
 
-    db.session.add(presensi_record)
+    if presensi_record is None:
+        return jsonify({'message': 'Presensi gagal, anda tidak terdaftar!', 'confidence': c, 'label': id_user, 'username': user.name})
+    presensi_record.jam = formatted_time
+    presensi_record.status = 1
+
     db.session.commit()
 
     return jsonify({'message': 'Presensi berhasil!', 'confidence': c, 'label': id_user, 'username': user.name})
