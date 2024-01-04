@@ -36,23 +36,14 @@ def index(id):
         )
         pass
 
-    print(baseQuery.all())
-    total_data = baseQuery.count()
-    pagination = baseQuery.paginate(page=page, per_page=per_page)
-    print(pagination.items)
-    start_data = page * per_page - per_page
-    len_items = len(pagination.items)
+    items = baseQuery.all()
 
     return render_template(
         template + 'index.html', 
         id=id,
-        pagination=pagination, 
-        len_items=len_items, 
         title=title, 
-        module=module, 
-        start_data=start_data, 
-        per_page=per_page, 
-        total_data=total_data, 
+        items=items,
+        module=module,
         search=search, 
         month=month, 
         year=year, 

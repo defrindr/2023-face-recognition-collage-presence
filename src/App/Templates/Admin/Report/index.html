@@ -54,9 +54,6 @@
                     </div>
                 </div>
             </form>
-            <p>
-                Menampilkan data {{ start_data + 1 }} sampai {{ start_data + len_items }} dari {{ total_data }}
-            </p>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered">
                     <thead>
@@ -77,9 +74,9 @@
                             <td colspan="4" class="text-center">Data Kosong</td>
                         </tr>
                         {% endif %}
-                        {% for row in pagination.items %}
+                        {% for row in items %}
                         <tr>
-                            <td> {{ loop.index + (pagination.page * per_page - per_page) }} </td>
+                            <td> {{ loop.index + 1 }} </td>
                             <td> {{ row.User.name }} </td>
                             {% for i in range(1, jumlah_hari_dalam_1bulan + 1) %}
                             <td> {{ row.User._checkAbsensiHariIni(i, month, year, row.Jadwal.id) }} </td>
