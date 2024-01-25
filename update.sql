@@ -1,0 +1,1 @@
+ALTER TABLE db_umpo_app.users MODIFY COLUMN `role` enum('ADMIN','MAHASISWA','DOSEN') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL;

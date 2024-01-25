@@ -12,6 +12,7 @@ from flask import current_app as app
 class Role(enum.Enum):
     ADMIN = "ADMIN"
     MAHASISWA = "MAHASISWA"
+    DOSEN = "DOSEN"
     pass
 
 
@@ -36,7 +37,7 @@ class User(db.Model):
         return path_training
 
     def hasTraining(self):
-        return os.path.exists(self.path())
+        return os.path.exists(self.path()) and os.path.exists(self.path() + '0.jpg')
 
     def _checkAbsensiHariIni(self, tanggal, bulan, tahun, jadwal_id):
         adaJadwal = db.session.query(Presensi).filter(
@@ -83,6 +84,12 @@ def _fetchById(id):
 def _baseQueryAdmin():
     return User.query.filter(
         User.role == Role.ADMIN,
+        User.flag == 1
+    ).order_by(User.username)
+
+def _baseQueryDosen():
+    return User.query.filter(
+        User.role == Role.DOSEN,
         User.flag == 1
     ).order_by(User.username)
 

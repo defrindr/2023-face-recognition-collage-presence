@@ -5,26 +5,26 @@ import cv2
 from flask import jsonify, render_template, request, url_for, flash, redirect
 from sqlalchemy import or_
 
-from App.Models.User import Role, User, _baseQueryAdmin, _fetchById, _fetchByUsername, _hashPassword
+from App.Models.User import Role, User, _baseQueryDosen, _fetchById, _fetchByUsername, _hashPassword
 from hashlib import md5
 from App.Core.database import db
 from facerec import training_data
 from flask import current_app as app
 
-module = "admin.admin"
-template = 'Admin/Admin/'
+module = "admin.dosen"
+template = 'Admin/Dosen/'
 
 
 def index():
 
-    title = "Management Admin"
+    title = "Management Dosen"
     headers = ['No', 'Username', 'Name', 'Aksi']
 
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
     search = request.args.get('search', '', type=str)
 
-    baseQuery = _baseQueryAdmin()
+    baseQuery = _baseQueryDosen()
 
     if search != '':
         baseQuery = baseQuery.filter(
@@ -43,7 +43,7 @@ def index():
 
 
 def create():
-    title = "Tambah Admin"
+    title = "Tambah Dosen"
     return render_template(template + 'create.html', title=title, module=module)
 
 
@@ -62,13 +62,12 @@ def store():
     if exist is not None:
         flash('Data telah ditambahkan sebelumnya', 'danger')
         return redirect(url_for(f'{module}.create'))
-
     if(file) :
         path = app.root_path + "/static/profiles/"
         form['photo'] = form['nim'] + ".png"
         if os.path.exists(path) == False:
             os.makedirs(path)
-        file.save( path+ form['nim'])
+        file.save( path+ form['photo'])
     else :
         flash('Foto tidak boleh kosong', 'danger')
         return redirect(url_for(f'{module}.create'))
@@ -78,7 +77,7 @@ def store():
         username=form['nim'],
         name=form['name'],
         photo=form['photo'],
-        role=Role.ADMIN,
+        role=Role.DOSEN,
         password=_hashPassword(form['password']),
         flag=1
     )
@@ -92,7 +91,7 @@ def store():
 
 
 def edit(id):
-    title = "Edit Admin"
+    title = "Edit Dosen"
     model = _fetchById(id)
     return render_template(template + 'edit.html', title=title, module=module, model=model)
 
@@ -123,7 +122,7 @@ def update(id):
 def destroy(id):
     model = _fetchById(id)
     if model.id == 4:
-        flash('Tidak dapat menghapus Admin Utama', 'danger')
+        flash('Tidak dapat menghapus Dosen Utama', 'danger')
         return redirect(url_for(f'{module}.index'))
     model.flag = 0
     db.session.commit()

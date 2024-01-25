@@ -1,0 +1,87 @@
+<!-- Topbar Start -->
+<div class="navbar-custom">
+    <div class="container-fluid">
+        <ul class="list-unstyled topnav-menu float-right mb-0">
+
+            <li class="dropdown notification-list">
+                <!-- Mobile menu toggle-->
+                <a class="navbar-toggle nav-link">
+                    <div class="lines">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </a>
+                <!-- End mobile menu toggle-->
+            </li>
+
+            <li class="dropdown notification-list">
+                <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown"
+                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <i class="mdi mdi-burger"></i>
+                    <img src="{{url_for('static', filename='logo simtik.png')}}" alt="user-image"
+                        class="rounded-circle">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                    <!-- item-->
+                    <div class="dropdown-header noti-title">
+                        <h6 class="text-overflow m-0">Welcome !</h6>
+                    </div>
+
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="mdi mdi-account-outline"></i>
+                        <span>Profile</span>
+                    </a>
+
+                    <!-- item-->
+                    <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="mdi mdi-settings-outline"></i>
+                        <span>Settings</span>
+                    </a> -->
+
+                    <!-- item-->
+                    <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="mdi mdi-lock-outline"></i>
+                        <span>Lock Screen</span>
+                    </a> -->
+
+                    <div class="dropdown-divider"></div>
+
+                    <!-- item-->
+
+                    <form action="{{url_for('auth.logoutAction')}}" class="d-inline" method="post" onsubmit="return confirm('Apakah Anda Yakin ?')">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                        <button class="dropdown-item notify-item mt-1 mr-1">
+                            <i class="mdi mdi-logout-variant"></i>
+                            <span>Logout</span>
+                        </button>
+                    </form>
+                    <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="mdi mdi-logout-variant"></i>
+                        <span>Logout</span>
+                    </a> -->
+
+                </div>
+            </li>
+
+        </ul>
+
+        <!-- LOGO -->
+        <div class="logo-box">
+            <a href="#" class="logo text-center">
+                <span class="logo-lg">
+                    <img src="{{url_for('static', filename='logo simtik.png')}}" alt="" height="60">
+                    <!-- <span class="logo-lg-text-light">{{ config.APP_NAME }}</span> -->
+                </span>
+                <span class="logo-sm">
+                    <!-- <span class="logo-lg-text-light">{{config.APP_NAME_SIMPLE}}</span> -->
+                    <img src="{{url_for('static', filename='logo simtik.png')}}" alt="" height="40">
+                </span>
+            </a>
+        </div>
+
+        <div class="clearfix"></div>
+    </div>
+</div>
+<!-- end Topbar -->

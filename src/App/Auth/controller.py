@@ -39,6 +39,8 @@ def loginAction():
     setSessionAuth(user.id, user.username, user.role)
     if user.role == Role.ADMIN:
         return redirect(url_for('admin.index'))
+    elif user.role == Role.DOSEN:
+        return redirect(url_for('dosen.index'))
     else:
         return redirect(url_for('mahasiswa.index'))
 

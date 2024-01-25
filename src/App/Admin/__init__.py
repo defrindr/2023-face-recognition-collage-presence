@@ -2,6 +2,7 @@ from . import controller
 from App.Admin.middleware import CheckIsLoggedAdmin
 from App.Extensions.routes import Routes
 from App.Admin.Admin import Module as AdminAdminModule
+from App.Admin.Dosen import Module as AdminDosenModule
 from App.Admin.Mahasiswa import Module as MahasiswaAdminModule
 from App.Admin.MataKuliah import Module as MatakuliahAdminModule
 from App.Admin.Report import Module as ReportAdminModule
@@ -16,6 +17,7 @@ registerRoute.middleware(CheckIsLoggedAdmin)
 registerRoute.get("/", controller.index)
 
 Module.register_blueprint(AdminAdminModule, url_prefix="/admin")
+Module.register_blueprint(AdminDosenModule, url_prefix="/dosen")
 Module.register_blueprint(MahasiswaAdminModule, url_prefix="/mahasiswa")
 Module.register_blueprint(KelasAdminModule, url_prefix="/kelas")
 Module.register_blueprint(MatakuliahAdminModule, url_prefix="/mata-kuliah")
