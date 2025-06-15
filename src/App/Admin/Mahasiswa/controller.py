@@ -113,7 +113,9 @@ def destroy(id):
     model = _fetchById(id)
     model.flag = 0
     db.session.commit()
-    shutil.rmtree(f"facerec/training/faces/{id}")
+    # remove if exists
+    if os.path.exists(f"facerec/training/faces/{id}"):
+        shutil.rmtree(f"facerec/training/faces/{id}")
     flash('Data berhasil diubah', 'info')
     return redirect(url_for(f'{module}.index'))
 
